@@ -60,5 +60,5 @@ def favicon():
 
 if __name__ == '__main__':
     print("wrd scheduler in main called!")
-    wrd.scheduler()
+    wrd.start_scheduler()
     app.run(host='0.0.0.0')
