@@ -11,7 +11,7 @@ class WordManager:
         self.changeWord()
 
     def scheduler(self):
-        self.scheduler = BackgroundScheduler()
+        self.scheduler = BackgroundScheduler(timezone="Europe/Berlin")
         self.scheduler.add_job(self.changeWord, 'interval', hours=12)
         self.scheduler.start()
 
