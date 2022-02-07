@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recle</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='index.css')}}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $SCRIPT_ROOT = {{ request.script_root|tojson }};
+        alert($SCRIPT_ROOT);
+    </script>
+</head>
+<body>
+
+    <main>
+        <header>
+            <h1>vordl</h1>
+        </header>
+        <div class="canvas">
+            <div class="row">
+                <div class="block"></div>
+                <div class="block"></div>
+                <div class="block"></div>
+                <div class="block"></div>
+                <div class="block"></div>
+                <img src="static/loading.gif" alt="Loading...">
+            </div>
+            <div class="row">
+                <div class="block"></div>
+                <div class="block"></div>
+                <div class="block"></div>
+                <div class="block"></div>
+                <div class="block"></div>
+                <img src="static/loading.gif" alt="Loading...">
+            </div>
+            <div class="row">
+                <div class="block"></div>
+                <div class="block"></div>
+                <div class="block"></div>
+                <div class="block"></div>
+                <div class="block"></div>
+                <img src="static/loading.gif" alt="Loading...">
+            </div>
+            <div class="row">
+                <div class="block"></div>
+                <div class="block"></div>
+                <div class="block"></div>
+                <div class="block"></div>
+                <div class="block"></div>
+                <img src="static/loading.gif" alt="Loading...">
+            </div>
+            <div class="row">
+                <div class="block"></div>
+                <div class="block"></div>
+                <div class="block"></div>
+                <div class="block"></div>
+                <div class="block"></div>
+                <img src="static/loading.gif" alt="Loading...">
+            </div>
+            <div class="row">
+                <div class="block"></div>
+                <div class="block"></div>
+                <div class="block"></div>
+                <div class="block"></div>
+                <div class="block"></div>
+                <img src="static/loading.gif" alt="Loading...">
+            </div>
+        </div>
+        
+    </main>
+
+    <div id="keyboard">
+            
+    </div>
+
+    <div class="next-word">
+        <p>Sledeca rec za...</p>
+    </div>
+
+    <div class="done">
+        <div class="done-block">
+            <h2>Ucitavanje...</h2>
+            <div class="stats">
+                <div class="stats-block" id="won">
+                    <h2>...</h2>
+                    <p>pobeda</p>
+                </div>
+                <div class="stats-block" id="lost">
+                    <h2>...</h2>
+                    <p>gubitaka</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="{{url_for('static', filename='script.js')}}"></script>
+</body>
+</html>
