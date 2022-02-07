@@ -23,10 +23,11 @@ class WordManager:
         return self.scheduler.get_jobs()[0].next_run_time.timestamp()
 
 app = Flask(__name__)
-
+wrd = None
 
 @app.before_first_request
 def scheduler():
+    global wrd
     wrd = WordManager()
     wrd.scheduler()
 
