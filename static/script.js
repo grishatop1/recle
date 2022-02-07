@@ -129,35 +129,54 @@ function badWordAnimation(blocks) {
     blocks.filter(".row").addClass("row-animation")
 }
 
-function getTimeChange() {
-    $.post("/time", {}, function(data) {
-        changeTimeLeft(parseInt(data));
-        setInterval(function() {
-            changeTimeLeft(parseInt(data));
-        }, 5000);
-    })
+function timeChanger() {
+    timeProcess();
+    var timeInterval = setInterval(timeProcess, 1000);
 }
 
-function changeTimeLeft(timestamp) {
+function timeProcess() {
+    var timestamp = parseInt(localStorage.getItem("next_time"));
+    if (localStorage.getItem("next_time") == null) {
+        try {
+            clearInterval(timeInterval);
+        } catch (e) {}
+        setTimeout(timeChanger, 1000);
+        return
+    }
     var time = new Date(timestamp*1000);
     var now = new Date();
     var diff = time - now;
     var final = new Date(diff);
     var hours = final.getUTCHours().toString();
     var minutes = final.getUTCMinutes().toString();
-    $(".next-word").html("Sledeca rec za " + hours + "h i " + minutes + "min");
-    $(".done h2").first().html("Sledeca rec je za " + hours + "h i " + minutes + "min");
+    var seconds = final.getUTCSeconds().toString();
+
+    var txt = "Sledeca rec za " + hours + "h " + minutes + "m i " + seconds + "s";
+    $(".next-word").html(txt);
+    $(".done h2").first().html(txt);
 
     if (diff < 0) {
-        getTimeChange();
-        // remove all words from localstorage
-        for (var i = 1; i < 7; i++) {
-            localStorage.removeItem(i);
-        }
+        clearInterval(timeInterval);
+        $.post("/time", {}, function(data) {
+            localStorage.setItem("next_time", data);
+            timeChanger();
+        });
+        clearGame();
     }
 }
 
 function loadCache() {
+    $.post("/time", {}, function(data) {
+        var new_next_time = parseInt(data)*1000;
+        var next_time = parseInt(localStorage.getItem("next_time"))*1000;
+        var now = new Date();
+        var diff = next_time - now;
+        localStorage.setItem("next_time", new_next_time);
+        if (diff < 0) {
+            clearGame();  
+        } 
+    });
+
     for (var i = 1; i <= 6; i++) {
         var cache = localStorage.getItem(i);
         if (cache != null) {
@@ -191,9 +210,30 @@ function showStats() {
     }
 }
 
+function hideStats() {
+    showing_stats = false;
+    $(".done").css("display", "none");
+}
+
+function clearGame() {
+    hideStats();
+    for (var i = 1; i < 7; i++) {
+        localStorage.removeItem(i);
+    }
+    word = "";
+    selected_block = 1;
+    selected_row = 1;
+    $(".canvas").find(".block").html("");
+    $(".canvas").find(".block").removeClass("wrong");
+    $(".canvas").find(".block").removeClass("correct");
+    $(".canvas").find(".block").removeClass("place");
+    $("#keyboard").find(".tipka").removeClass("wrong-tipka");
+}
+
 //starting point
 $(document).ready(function() {
     generateKeyboard();
-    getTimeChange();
     loadCache();
+
+    timeChanger();
 });

@@ -1,7 +1,8 @@
-from flask import Flask, render_template, send_from_directory, request
-import json
+from flask import Flask, render_template, request
 import os
+import json
 import random
+import datetime
 from apscheduler.schedulers.background import BackgroundScheduler
 
 class WordManager:
@@ -13,7 +14,11 @@ class WordManager:
     def start_scheduler(self):
         print("Scheduler started!")
         self.scheduler = BackgroundScheduler(timezone="Europe/Berlin")
-        self.scheduler.add_job(self.changeWord, 'interval', hours=12)
+        self.scheduler.add_job(
+            self.changeWord, 
+            'interval', 
+            hours=12, 
+            start_date=datetime.datetime.now().replace(hour=12, minute=0))
         self.scheduler.start()
 
     def changeWord(self):
@@ -25,8 +30,10 @@ class WordManager:
 
 app = Flask(__name__)
 wrd = WordManager()
-wrd.start_scheduler()
-print("wrd scheduler called outside main!")
+
+if os.environ.get("WERKZEUG_RUN_MAIN") == "true":
+    wrd.start_scheduler()
+    print("wrd scheduler called outside main!")
 
 @app.route('/')
 def index():
@@ -60,6 +67,4 @@ def favicon():
     return "none"
 
 if __name__ == '__main__':
-    print("wrd scheduler in main called!")
-    wrd.start_scheduler()
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', debug=True)
