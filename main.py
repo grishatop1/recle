@@ -2,7 +2,7 @@ from flask import Flask, render_template, send_from_directory, request
 import json
 import os
 import random
-from flask_apscheduler import APScheduler
+from apscheduler.schedulers.background import BackgroundScheduler
 
 class WordManager:
     def __init__(self):
@@ -12,7 +12,7 @@ class WordManager:
     def start_scheduler(self):
         if not app.debug or os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
             print("Scheduler started!")
-            self.scheduler = APScheduler()
+            self.scheduler = BackgroundScheduler()
             self.scheduler.add_job(self.changeWord, 'interval', hours=12)
             self.scheduler.start()
 
