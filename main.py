@@ -23,13 +23,8 @@ class WordManager:
         return self.scheduler.get_jobs()[0].next_run_time.timestamp()
 
 app = Flask(__name__)
-wrd = None
-
-@app.before_first_request
-def scheduler():
-    global wrd
-    wrd = WordManager()
-    wrd.scheduler()
+wrd = WordManager()
+wrd.scheduler()
 
 @app.route('/')
 def index():
@@ -63,4 +58,4 @@ def favicon():
     return "none"
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(host='0.0.0.0')
