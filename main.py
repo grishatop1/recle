@@ -24,9 +24,10 @@ class WordManager:
 
 app = Flask(__name__)
 
-wrd = WordManager()
+
 @app.before_first_request
 def scheduler():
+    wrd = WordManager()
     wrd.scheduler()
 
 @app.route('/')
