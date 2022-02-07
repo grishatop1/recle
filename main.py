@@ -25,6 +25,7 @@ class WordManager:
         return self.scheduler.get_jobs()[0].next_run_time.timestamp()
 
 app = Flask(__name__)
+app.debug = False
 wrd = WordManager()
 wrd.scheduler()
 
