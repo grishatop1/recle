@@ -11,9 +11,11 @@ class WordManager:
         self.changeWord()
 
     def scheduler(self):
-        self.scheduler = BackgroundScheduler(timezone="Europe/Berlin")
-        self.scheduler.add_job(self.changeWord, 'interval', hours=12)
-        self.scheduler.start()
+        if not app.debug or os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
+            print("Scheduler started!")
+            self.scheduler = BackgroundScheduler(timezone="Europe/Berlin")
+            self.scheduler.add_job(self.changeWord, 'interval', hours=12)
+            self.scheduler.start()
 
     def changeWord(self):
         self.current_word = random.choice(self.words)
