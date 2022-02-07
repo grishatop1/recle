@@ -2,18 +2,19 @@ from flask import Flask, render_template, send_from_directory, request
 import json
 import os
 import random
-from apscheduler.schedulers.background import BackgroundScheduler
+from flask_apscheduler import APScheduler
 
 class WordManager:
     def __init__(self):
         self.words = json.load(open('words.json'))
         self.current_word = None
 
-    def scheduler(self):
-        print("Scheduler started!")
-        self.scheduler = BackgroundScheduler(timezone="Europe/Berlin")
-        self.scheduler.add_job(self.changeWord, 'interval', hours=12)
-        self.scheduler.start()
+    def start_scheduler(self):
+        if not app.debug or os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
+            print("Scheduler started!")
+            self.scheduler = APScheduler(timezone="Europe/Berlin")
+            self.scheduler.add_job(self.changeWord, 'interval', hours=12)
+            self.scheduler.start()
 
     def changeWord(self):
         self.current_word = random.choice(self.words)
@@ -24,6 +25,7 @@ class WordManager:
 
 app = Flask(__name__)
 wrd = WordManager()
+wrd.start_scheduler()
 
 @app.route('/')
 def index():

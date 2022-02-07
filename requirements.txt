@@ -1,4 +1,5 @@
 apscheduler
+Flask-APScheduler
 flask
 Click==7.0
 gunicorn==19.9.0
