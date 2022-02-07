@@ -12,7 +12,7 @@ class WordManager:
     def start_scheduler(self):
         if not app.debug or os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
             print("Scheduler started!")
-            self.scheduler = APScheduler(timezone="Europe/Berlin")
+            self.scheduler = APScheduler()
             self.scheduler.add_job(self.changeWord, 'interval', hours=12)
             self.scheduler.start()
 
