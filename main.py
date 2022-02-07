@@ -8,8 +8,6 @@ class WordManager:
     def __init__(self):
         self.words = json.load(open('words.json'))
         self.current_word = None
-        self.changeWord()
-        self.scheduler()
 
     def scheduler(self):
         print("Scheduler started!")
