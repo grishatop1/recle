@@ -91,9 +91,11 @@ function doLetter(letter) {
             word = word.substring(0, word.length - 1);
         }
     } else {
-        var block = blocks.children(":nth-child("+selected_block+")")
-        block.html(letter)
-        word += letter;
+        if (selected_block <= 5) {
+            var block = blocks.children(":nth-child("+selected_block+")")
+            block.html(letter)
+            word += letter;
+        }
         selected_block++;
         if (selected_block > 6) {
             selected_block = 6;
@@ -143,8 +145,8 @@ function changeTimeLeft(timestamp) {
     var final = new Date(diff);
     var hours = final.getUTCHours().toString();
     var minutes = final.getUTCMinutes().toString();
-    $(".next-word").html("Sledeca rijec za " + hours + "h i " + minutes + "min");
-    $(".done h2").first().html("Sledeca rijec je za " + hours + "h i " + minutes + "min");
+    $(".next-word").html("Sledeca rec za " + hours + "h i " + minutes + "min");
+    $(".done h2").first().html("Sledeca rec je za " + hours + "h i " + minutes + "min");
 
     if (diff < 0) {
         getTimeChange();
