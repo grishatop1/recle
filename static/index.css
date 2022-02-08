@@ -187,6 +187,26 @@ h1 {
     padding: 10px;
 }
 
+.desc {
+    margin-top: 10px;
+}
+
+.desc span {
+    display: block;
+}
+
+.desc p {
+    display: inline-block;
+    font-weight: normal;
+    opacity: 0.3;
+}
+
+.help-box {
+    width: 10px;
+    height: 12px;
+    border-radius: 3px;
+    display: inline-block !important;
+}
 
 
 @media screen and (max-width: 520px) {
