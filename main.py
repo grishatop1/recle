@@ -18,7 +18,7 @@ class WordManager:
             self.changeWord, 
             'interval', 
             hours=12, 
-            start_date=datetime.datetime.now().replace(hour=12, minute=0))
+            start_date=datetime.datetime.now().replace(hour=14, minute=43))
         self.scheduler.start()
 
     def changeWord(self):
@@ -61,6 +61,10 @@ def check():
 @app.route('/time', methods=['POST'])
 def time():
     return str(wrd.timeLeft())
+
+@app.route('/hash', methods=['POST'])
+def hashWord():
+    return str(hash(wrd.current_word))
 
 @app.route('/favicon.ico') 
 def favicon(): 

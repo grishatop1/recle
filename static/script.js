@@ -84,11 +84,15 @@ function doLetter(letter) {
             badWordAnimation(blocks);
         }
     } else if (letter == "backspace") {
-        if (selected_block > 1) {
-            selected_block--;
-            var block = blocks.children(":nth-child("+selected_block+")")
-            block.html("")
-            word = word.substring(0, word.length - 1);
+        if (is_processing) {
+            badWordAnimation(blocks);
+        } else {
+            if (selected_block > 1) {
+                selected_block--;
+                var block = blocks.children(":nth-child("+selected_block+")")
+                block.html("")
+                word = word.substring(0, word.length - 1);
+            }
         }
     } else {
         if (selected_block <= 5) {
@@ -130,53 +134,54 @@ function badWordAnimation(blocks) {
 }
 
 function timeChanger() {
+    function timeProcess() {
+        var now = new Date().getTime()/1000;
+        var diff = nexttime - now;
+
+        if (diff < 0) {
+            clearGame();
+            clearInterval(timeInterval);
+            $.post("/time", function(data) {
+                nexttime = parseInt(data);
+                timeChanger();
+            });
+        }
+
+        var final = new Date(diff*1000);
+        var hours = final.getUTCHours();
+        var minutes = final.getUTCMinutes();
+        var seconds = final.getUTCSeconds();
+
+        hours = (hours < 10) ? "0" + hours : hours;
+        minutes = (minutes < 10) ? "0" + minutes : minutes;
+        seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+        var txt = "Sleceda rec za " + hours + "h " + minutes + "m " + seconds + "s";
+        $(".done-block h2").first().html(txt);
+        $(".next-word p").html(txt);
+    }
     timeProcess();
     var timeInterval = setInterval(timeProcess, 1000);
 }
 
-function timeProcess() {
-    var timestamp = parseInt(localStorage.getItem("next_time"));
-    if (localStorage.getItem("next_time") == null) {
-        try {
-            clearInterval(timeInterval);
-        } catch (e) {}
-        setTimeout(timeChanger, 1000);
-        return
-    }
-    var time = new Date(timestamp*1000);
-    var now = new Date();
-    var diff = time - now;
-    var final = new Date(diff);
-    var hours = final.getUTCHours().toString();
-    var minutes = final.getUTCMinutes().toString();
-    var seconds = final.getUTCSeconds().toString();
-
-    var txt = "Sledeca rec za " + hours + "h " + minutes + "m i " + seconds + "s";
-    $(".next-word").html(txt);
-    $(".done h2").first().html(txt);
-
-    if (diff < 0) {
-        clearInterval(timeInterval);
-        $.post("/time", {}, function(data) {
-            localStorage.setItem("next_time", data);
-            timeChanger();
-        });
-        clearGame();
-    }
-}
-
+var nexttime = null;
 function loadCache() {
-    $.post("/time", {}, function(data) {
-        var new_next_time = parseInt(data)*1000;
-        var next_time = parseInt(localStorage.getItem("next_time"))*1000;
-        var now = new Date();
-        var diff = next_time - now;
-        localStorage.setItem("next_time", new_next_time);
-        if (diff < 0) {
-            clearGame();  
-        } 
+    $.post("/hash", function(data) {
+        if (localStorage.getItem("hash") != data) {
+            clearGame();
+            localStorage.setItem("hash", data);
+            $.post("/time", function(data) {
+                nexttime = parseInt(data);
+                localStorage.setItem("time", data);
+                timeChanger();
+            });
+        } else {
+            nexttime = parseInt(localStorage.getItem("time"));
+            timeChanger();
+        }
     });
 
+    //place words
     for (var i = 1; i <= 6; i++) {
         var cache = localStorage.getItem(i);
         if (cache != null) {
@@ -234,6 +239,4 @@ function clearGame() {
 $(document).ready(function() {
     generateKeyboard();
     loadCache();
-
-    timeChanger();
 });
