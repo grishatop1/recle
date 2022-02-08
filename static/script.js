@@ -14,9 +14,11 @@ function generateKeyboard() {
             button = document.createElement('button');
             button.innerHTML = order[i][j];
             button.className = 'tipka';
+            button.setAttribute("tabindex", "-1");
             row.appendChild(button);
             button.onclick = function() {
                 doLetter(this.innerHTML);
+                this.blur();
             }
         }
         keyboard.appendChild(row);
