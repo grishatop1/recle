@@ -30,8 +30,10 @@ class WordManager:
 
 app = Flask(__name__)
 wrd = WordManager()
+if not app.debug:
+    wrd.start_scheduler()
 
-if os.environ.get("WERKZEUG_RUN_MAIN") == "true":
+if app.debug and os.environ.get("WERKZEUG_RUN_MAIN") == "true":
     wrd.start_scheduler()
     print("wrd scheduler called outside main!")
 
