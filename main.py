@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 import os
 import json
 import random
@@ -71,6 +71,13 @@ def hashWord():
 @app.route('/favicon.ico') 
 def favicon(): 
     return "none"
+
+@app.before_request
+def before_request():
+    if not request.is_secure:
+        url = request.url.replace('http://', 'https://', 1)
+        code = 301
+        return redirect(url, code=code)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
