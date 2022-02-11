@@ -15,6 +15,10 @@ body, html {
     background-color: #191919;
 }
 
+body {
+    position: relative;
+}
+
 main {
     width: 50%;
     height: 100%;
