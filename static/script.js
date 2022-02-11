@@ -63,11 +63,26 @@ function doLetter(letter) {
                 }, function(data) {
                     var next_row = true;
                     if (data == "OK") {
-                        blocks.find("div").addClass("correct")
-                        localStorage.setItem(selected_row, word+";"+"!!!!!");
-                        localStorage.setItem("won", parseInt(won)+1);
-                        won += 1;
-                        showStats();
+                        blocks.find("img").css("visibility", "hidden");
+                        var tl = anime.timeline({
+                            easing: 'easeOutExpo',
+                            duration: 500,
+                            complete: function() {
+                                localStorage.setItem(selected_row, word+";"+"!!!!!");
+                                localStorage.setItem("won", parseInt(won)+1);
+                                won += 1;
+                                showStats();
+                            }
+                        });
+                        for (var i = 0; i < word.length; i++) {
+                            tl.add({
+                                targets: blocks.find(":nth-child("+(i+1)+")")[0],
+                                backgroundColor: "#00ff00",
+                                borderRadius: "5px",
+                                borderColor: "#00ff00"
+                            });
+                        }
+                        return
                     } else if (data == "NEMA") {
                         next_row = false;
                         wrong_words.push(word);
@@ -276,7 +291,7 @@ $(document).ready(function() {
     anime({
         targets: '.letter',
         translateY: [-100,0],
-        easing: "easeOutExpo",
+        easing: "easeOutElastic",
         duration: 1500,
         delay: anime.stagger(250, {start: 300})
     })
