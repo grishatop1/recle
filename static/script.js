@@ -102,9 +102,9 @@ function doLetter(letter) {
                             lost += 1;
                             anime({
                                 targets: '.block',
-                                translateX: anime.stagger(10, {grid: [5, 6], from: 'center', axis: 'x'}),
+                                translateX: anime.stagger(25, {grid: [5, 6], from: 'center', axis: 'x'}),
                                 translateY: 1000,
-                                rotateZ: anime.stagger([0, 35], {grid: [5, 6], from: 'center', axis: 'x'}),
+                                rotateZ: anime.stagger([0, 45], {grid: [5, 6], from: 'center', axis: 'x'}),
                                 delay: anime.stagger(150, {grid: [5, 6], start: 250, from: "last"}),
                                 easing: 'easeInOutQuad',
                                 complete: function() {

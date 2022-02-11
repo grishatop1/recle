@@ -17,8 +17,8 @@ class WordManager:
         self.scheduler.add_job(
             self.changeWord, 
             'interval', 
-            hours=12, 
-            start_date=datetime.datetime.now().replace(hour=14, minute=43))
+            hours=6,
+            start_date=datetime.datetime.now().replace(minute=0))
         self.scheduler.start()
 
     def changeWord(self):
