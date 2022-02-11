@@ -46,6 +46,8 @@ var lost = parseInt(localStorage.getItem("lost"));
 
 var is_processing = false;
 
+var wrong_words = [];
+
 function doLetter(letter) {
     if (selected_row > 6) {
         return;
@@ -53,7 +55,7 @@ function doLetter(letter) {
     var blocks = $(".canvas :nth-child("+selected_row+")")
     if (letter == "enter") {
         if (word.length == 5) {
-            if (!is_processing) {
+            if (!is_processing && !wrong_words.includes(word)) {
                 is_processing = true;
                 blocks.find("img").css("visibility", "visible");
                 $.post("/check", {
@@ -68,6 +70,7 @@ function doLetter(letter) {
                         showStats();
                     } else if (data == "NEMA") {
                         next_row = false;
+                        wrong_words.push(word);
                         badWordAnimation(blocks);
                     } else {
                         localStorage.setItem(selected_row, word+";"+data);
