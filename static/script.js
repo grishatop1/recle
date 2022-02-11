@@ -100,7 +100,17 @@ function doLetter(letter) {
                         if (selected_row == 7) {
                             localStorage.setItem("lost", parseInt(lost)+1);
                             lost += 1;
-                            showStats();
+                            anime({
+                                targets: '.block',
+                                translateX: anime.stagger(10, {grid: [5, 6], from: 'center', axis: 'x'}),
+                                translateY: 1000,
+                                rotateZ: anime.stagger([0, 35], {grid: [5, 6], from: 'center', axis: 'x'}),
+                                delay: anime.stagger(150, {grid: [5, 6], start: 250, from: "last"}),
+                                easing: 'easeInOutQuad',
+                                complete: function() {
+                                    showStats();
+                                }
+                            });
                         }
                     }
                 });
