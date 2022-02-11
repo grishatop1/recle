@@ -14,6 +14,7 @@ function generateKeyboard() {
             button = document.createElement('button');
             button.innerHTML = order[i][j];
             button.className = 'tipka';
+            button.id = "kkk-" + order[i][j];
             button.setAttribute("tabindex", "-1");
             row.appendChild(button);
             button.onclick = function() {
@@ -107,6 +108,13 @@ function doLetter(letter) {
             var block = blocks.children(":nth-child("+selected_block+")")
             block.html(letter)
             word += letter;
+            anime({
+                targets: [block[0], "#kkk-"+letter],
+                scale: 1.2,
+                direction: 'alternate',
+                duration: 50,
+                easing: 'linear'
+            });
         }
         selected_block++;
         if (selected_block > 6) {
@@ -127,7 +135,7 @@ function putWord(blocks, word, data) {
             blocks.find(":nth-child("+(i+1)+")").addClass("wrong");
             var tipke = $(".tipka").filter(":contains('"+word[i]+"')")
             tipke.each(function() {
-                if ($(this).html().length == 1) {
+                if ($("#kkk-"+word[i]) == 1) {
                     $(this).addClass("wrong-tipka");
                 }
             });
@@ -136,9 +144,17 @@ function putWord(blocks, word, data) {
 }
 
 function badWordAnimation(blocks) {
-    blocks.filter(".row").removeClass("row-animation")
-    blocks.filter(".row").outerWidth();
-    blocks.filter(".row").addClass("row-animation")
+    var therow = blocks.filter(".row")
+    anime({
+        targets: therow[0],
+        keyframes: [
+            {translateX: [0,-10]},
+            {translateX: 10}
+        ],
+        duration: 150,
+        easing: 'linear',
+        direction: "alternate"
+    })
 }
 
 function timeChanger() {
@@ -247,4 +263,16 @@ function clearGame() {
 $(document).ready(function() {
     generateKeyboard();
     loadCache();
+
+    //title animation
+    var textWrapper = document.querySelector('header h1');
+    textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
+
+    anime({
+        targets: '.letter',
+        translateY: [-100,0],
+        easing: "easeOutExpo",
+        duration: 1500,
+        delay: anime.stagger(250, {start: 600})
+    })
 });

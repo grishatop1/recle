@@ -40,6 +40,10 @@ h1 {
     letter-spacing: 5px;
 }
 
+.letter {
+    display: inline-block;
+}
+
 .canvas {
     width: 100%;
     display: flex;
@@ -65,27 +69,6 @@ h1 {
     visibility: hidden;
 }
 
-.row-animation {
-    animation: shake 0.1s 1;
-}
-
-@keyframes shake {
-    0% {
-        transform: translateX(0);
-    }
-    25% {
-        transform: translateX(6px);
-    }
-    50% {
-        transform: translateX(0);
-    }
-    75% {
-        transform: translateX(-6px);
-    }
-    100% {
-        transform: translateX(0);
-    }
-}
 
 .block {
     width: 60px;
@@ -97,6 +80,7 @@ h1 {
     text-transform: uppercase;
     align-items: center;
     font-size: 1.8em;
+    transform: background-color 0.2s ease-in-out;
 }
 
 #keyboard {
