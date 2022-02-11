@@ -101,6 +101,13 @@ function doLetter(letter) {
                 var block = blocks.children(":nth-child("+selected_block+")")
                 block.html("")
                 word = word.substring(0, word.length - 1);
+                anime({
+                    targets: [block[0], "#kkk-"+letter],
+                    scale: [1, 0.9],
+                    direction: 'alternate',
+                    duration: 50,
+                    easing: 'linear'
+                });
             }
         }
     } else {
@@ -110,7 +117,7 @@ function doLetter(letter) {
             word += letter;
             anime({
                 targets: [block[0], "#kkk-"+letter],
-                scale: 1.2,
+                scale: [1, 1.2],
                 direction: 'alternate',
                 duration: 50,
                 easing: 'linear'
@@ -268,6 +275,6 @@ $(document).ready(function() {
         translateY: [-100,0],
         easing: "easeOutExpo",
         duration: 1500,
-        delay: anime.stagger(250, {start: 600})
+        delay: anime.stagger(250, {start: 300})
     })
 });
