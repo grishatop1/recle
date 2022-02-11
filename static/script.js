@@ -133,12 +133,7 @@ function putWord(blocks, word, data) {
             blocks.find(":nth-child("+(i+1)+")").addClass("place");
         } else {
             blocks.find(":nth-child("+(i+1)+")").addClass("wrong");
-            var tipke = $(".tipka").filter(":contains('"+word[i]+"')")
-            tipke.each(function() {
-                if ($("#kkk-"+word[i]) == 1) {
-                    $(this).addClass("wrong-tipka");
-                }
-            });
+            $("#kkk-"+word[i]).addClass("wrong-tipka")
         }
     }
 }
