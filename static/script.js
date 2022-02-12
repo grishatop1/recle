@@ -234,6 +234,7 @@ function loadCache() {
             timeChanger();
         }
     });
+    loadWordsFromCache();
 }
 
 function loadWordsFromCache() {
