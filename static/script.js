@@ -234,8 +234,9 @@ function loadCache() {
             timeChanger();
         }
     });
+}
 
-    //place words
+function loadWordsFromCache() {
     for (var i = 1; i <= 6; i++) {
         var cache = localStorage.getItem(i);
         if (cache != null) {
