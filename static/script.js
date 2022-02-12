@@ -25,7 +25,7 @@ function generateKeyboard() {
         keyboard.appendChild(row);
     }
     window.addEventListener("keydown", function (e) {
-        let key = e.key.toLowerCase();
+        let key = e.key.toLowerCase().replace(/ /g,'');
         if (key == "backspace" || key == "enter" || key.length==1) {
             doLetter(key);
         }
