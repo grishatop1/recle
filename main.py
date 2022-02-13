@@ -122,6 +122,8 @@ def check():
             if s == "?":
                 #set it to grey
                 snd[snd.index(s)] = "-"
+#        else:
+#            snd[snd.index(s)] = "-"
 
     return "".join(snd)
 
