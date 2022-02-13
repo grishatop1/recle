@@ -11,6 +11,7 @@ class WordManager:
     def __init__(self):
         self.words = json.load(open('words.json'))
         self.current_word = None
+        self.letter_count = {}
         self.changeWord()
 
     def start_scheduler(self):
@@ -26,6 +27,12 @@ class WordManager:
     def changeWord(self):
         self.current_word = random.choice(self.words)
         print(f"Current word is - {self.current_word}!")
+        self.countLetters()
+
+    def countLetters(self):
+        for letter in self.word:
+            try: self.letter_count[letter]+=1
+            except: self.letter_count[letter]=1
 
     def changeSpecificWord(self, word):
         self.current_word = word
@@ -82,6 +89,14 @@ def check():
         else:
             if letter in wrd.current_word:
                 snd += "?" # wrong position
+                #if there's still some of this letter to be found
+                if wrd.letter_count[letter]:
+                    #one found, mark it off
+                    wrd.letter_count[letter]-=1
+                #if there's zero remaining
+                else:
+                    #change the false yellow to a grey
+                    snd[i]="-"
             else:
                 snd += "-" # wrong letter
     return snd
