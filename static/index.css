@@ -200,6 +200,10 @@ h1 {
     display: inline-block !important;
 }
 
+.links {
+    margin-top: 10px;
+}
+
 
 @media screen and (max-width: 520px) {
     main {
