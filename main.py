@@ -88,27 +88,26 @@ def check():
     for i, letter in enumerate(word):
         if letter == wrd.current_word[i]:
             snd.append("!") # correct letter
+            #if there is a yellow with this letter
+            if snd[word.index(letter)] == "?":
+                #set it to grey
+                snd[word.index(letter)] = "-"
+            #if there's still some of this letter to be found
+            if letter_count[letter]:
+                #one found, mark it off
+                letter_count[letter]-=1
+        elif letter in wrd.current_word:
+            snd.append("?") # wrong position
             #if there's still some of this letter to be found
             if letter_count[letter]:
                 #one found, mark it off
                 letter_count[letter]-=1
             #if there's zero remaining
             else:
-                #there should not be zero remaining if it's a green so i think it's ok
-                continue
+                #change the false yellow to a grey
+                snd[i]="-"
         else:
-            if letter in wrd.current_word:
-                snd.append("?") # wrong position
-                #if there's still some of this letter to be found
-                if letter_count[letter]:
-                    #one found, mark it off
-                    letter_count[letter]-=1
-                #if there's zero remaining
-                else:
-                    #change the false yellow to a grey
-                    snd[i]="-"
-            else:
-                snd.append("-") # wrong letter
+            snd.append("-") # wrong letter
     return "".join(snd)
 
 @app.route('/time', methods=['POST'])
