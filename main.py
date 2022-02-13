@@ -83,15 +83,17 @@ def check():
         try: letter_count[letter]+=1
         #if there's no count, start at 1
         except: letter_count[letter]=1
+    #make a copy of the letter count for the green counting
+    #difference is, here we only count when we find a green
+    green_count = dict(letter_count)
 
     snd = []
     for i, letter in enumerate(word):
         if letter == wrd.current_word[i]:
             snd.append("!") # correct letter
-            #if there is a yellow with this letter
-            if snd[word.index(letter)] == "?":
-                #set it to grey
-                snd[word.index(letter)] = "-"
+            #down the count of that letter
+            green_count[letter] -= 1
+
             #if there's still some of this letter to be found
             if letter_count[letter]:
                 #one found, mark it off
@@ -108,6 +110,19 @@ def check():
                 snd[i]="-"
         else:
             snd.append("-") # wrong letter
+        
+    #here we have a complete snd for this guess
+    #now we go to check if there are any false yellows remaining
+
+    #for each mark in snd
+    for s in snd:
+        #if we guessed all there is of that mark's letter
+        if green_count[wrd.current_word[snd.index(s)]] == 0:
+            #if it's a yellow
+            if s == "?":
+                #set it to grey
+                snd[snd.index(s)] = "-"
+
     return "".join(snd)
 
 @app.route('/time', methods=['POST'])
