@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change word</title>
+</head>
+<body>
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    <form action="/change" method="post">
+        <input type="text" name="word" placeholder="Enter word" autocomplete="off" readonly 
+        onfocus="this.removeAttribute('readonly');" >
+        <input type="password" name="password" placeholder="Enter admin password" autocomplete="off" readonly 
+        onfocus="this.removeAttribute('readonly');" >
+        <input type="submit" value="Change">
+    </form>
+</body>
+</html>

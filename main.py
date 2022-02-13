@@ -2,6 +2,7 @@ from flask import Flask, render_template, url_for
 from flask import request, redirect, send_from_directory
 import os
 import json
+import hashlib
 import random
 import datetime
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -26,6 +27,9 @@ class WordManager:
         self.current_word = random.choice(self.words)
         print(f"Current word is - {self.current_word}!")
 
+    def changeSpecificWord(self, word):
+        self.current_word = word
+
     def timeLeft(self):
         return self.scheduler.get_jobs()[0].next_run_time.timestamp()
 
@@ -41,6 +45,27 @@ if app.debug and os.environ.get("WERKZEUG_RUN_MAIN") == "true":
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/change', methods=['POST', 'GET'])
+def change():
+    if request.method == 'POST':
+        new_word = request.form['word']
+        passw = request.form['password']
+        
+        # check if password is correct
+        hash_object = hashlib.sha256(passw.encode())
+        hex_dig = hash_object.hexdigest()
+        true_dig = "d5f8e8ce95a223ed099dac2b00ffe65ac61bd7127cfb823fa4f5a2d97a404107"
+        if hex_dig == true_dig:
+            if new_word in wrd.words:
+                wrd.changeSpecificWord(new_word)
+                return redirect(url_for('index'))
+            else:
+                return render_template('change.html', error="Word not found!")
+        else:
+            return render_template('change.html', error="Wrong password!")
+    else:
+        return render_template('change.html')
 
 @app.route('/check', methods=['POST'])
 def check():
