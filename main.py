@@ -30,7 +30,7 @@ class WordManager:
         self.countLetters()
 
     def countLetters(self):
-        for letter in self.word:
+        for letter in self.current_word:
             try: self.letter_count[letter]+=1
             except: self.letter_count[letter]=1
 
