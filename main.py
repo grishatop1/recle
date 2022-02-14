@@ -114,7 +114,7 @@ def check():
             snd.append("-") # wrong letter
         
     #make a copy of snd to work on while looping through snd
-    copy = list(snd)
+    snd_copy = list(snd)
     #for each mark in snd
     for s in snd:
         #if that letter in our guess is in the correct word
@@ -124,11 +124,11 @@ def check():
                 #if the mark is a yellow
                 if s == "?":
                     #set it to grey
-                    copy[snd.index(s)] = "-"
+                    snd_copy[snd.index(s)] = "-"
                 #i used nested ifs to limit width of code
                 #and increase readability
 
-    return "".join(copy)
+    return "".join(snd_copy)
 
 @app.route('/time', methods=['POST'])
 def time():
