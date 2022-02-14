@@ -74,17 +74,61 @@ def check():
         return 'OK'
     if word not in wrd.words:
         return 'NEMA'
+    #for every check we do it again
+    #because it's a new attempt at guessing
+    letter_count = {}
+    #for each letter
+    for letter in wrd.current_word:
+        #try to up its count
+        try: letter_count[letter]+=1
+        #if there's no count, start at 1
+        except: letter_count[letter]=1
+    #make a copy of the letter count for the green counting
+    #difference is, here we only count when we find a green
+    green_count = dict(letter_count)
 
-    snd = ""
+    snd = []
     for i, letter in enumerate(word):
         if letter == wrd.current_word[i]:
-            snd += "!" # correct letter
-        else:
-            if letter in wrd.current_word:
-                snd += "?" # wrong position
+            snd.append("!") # correct letter
+            #down the count of that letter
+            green_count[letter] -= 1
+
+            #if there's still some of this letter to be found
+            if letter_count[letter]:
+                #one found, mark it off
+                letter_count[letter]-=1
+
+        elif letter in wrd.current_word:
+            snd.append("?") # wrong position
+
+            #if there's still some of this letter to be found
+            if letter_count[letter]:
+                #one found, mark it off
+                letter_count[letter]-=1
+            #if there's zero remaining
             else:
-                snd += "-" # wrong letter
-    return snd
+                #change the false yellow to a grey
+                snd[i]="-"
+        else:
+            snd.append("-") # wrong letter
+        
+    #make a copy of snd to work on while looping through snd
+    snd_copy = list(snd)
+    #for each mark in snd
+    for s in snd:
+        #if that letter in our guess is in the correct word
+        if word[snd.index(s)] in green_count:
+            #and we guessed all there is of that mark's letter
+            if green_count[word[snd.index(s)]] == 0:
+                #if the mark is a yellow
+                if s == "?":
+                    #set it to grey
+                    snd_copy[snd.index(s)] = "-"
+                #i used nested ifs to limit width of code
+                #and increase readability
+
+    return "".join(snd_copy)
 
 @app.route('/time', methods=['POST'])
 def time():
