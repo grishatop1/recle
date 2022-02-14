@@ -98,8 +98,10 @@ def check():
             if letter_count[letter]:
                 #one found, mark it off
                 letter_count[letter]-=1
+
         elif letter in wrd.current_word:
             snd.append("?") # wrong position
+
             #if there's still some of this letter to be found
             if letter_count[letter]:
                 #one found, mark it off
@@ -111,21 +113,22 @@ def check():
         else:
             snd.append("-") # wrong letter
         
-    #here we have a complete snd for this guess
-    #now we go to check if there are any false yellows remaining
-
+    #make a copy of snd to work on while looping through snd
+    copy = list(snd)
     #for each mark in snd
     for s in snd:
-        #if we guessed all there is of that mark's letter
-        if green_count[wrd.current_word[snd.index(s)]] == 0:
-            #if it's a yellow
-            if s == "?":
-                #set it to grey
-                snd[snd.index(s)] = "-"
-#        else:
-#            snd[snd.index(s)] = "-"
+        #if that letter in our guess is in the correct word
+        if word[snd.index(s)] in green_count:
+            #and we guessed all there is of that mark's letter
+            if green_count[word[snd.index(s)]] == 0:
+                #if the mark is a yellow
+                if s == "?":
+                    #set it to grey
+                    copy[snd.index(s)] = "-"
+                #i used nested ifs to limit width of code
+                #and increase readability
 
-    return "".join(snd)
+    return "".join(copy)
 
 @app.route('/time', methods=['POST'])
 def time():
